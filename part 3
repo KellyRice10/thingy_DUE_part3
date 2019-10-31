@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -12,8 +13,8 @@ public class ArrayNotesGame extends JComponent implements MouseListener{
 	int turn = 0;
 	int player1 = 0, player2 = 0;
 	int piecesLeft = 0;
-  
-  int lastMove = -5;
+
+	int lastMove = -5;
 
 	public  ArrayNotesGame() {
 		addMouseListener(this);
@@ -37,15 +38,15 @@ public class ArrayNotesGame extends JComponent implements MouseListener{
 
 		for (int i = 0; i< board.length; i++){
 			if(lastMove==i){
-        g.setColor(Color.GREEN);
-        g.fillRect(i*100,100, 100, 100);
-        g.setColor(Color.BLACK);
-      } else if(Math.abs(lastMove-i)==1){
-          g.setColor(Color.YELLOW);
-          g.fillRect(i*100,100, 100, 100);
-          g.setColor(Color.BLACK);
-      }
-      g.drawString(""+board[i], 10+i*100, 150);
+				g.setColor(Color.GREEN);
+				g.fillRect(i*100,100, 100, 100);
+				g.setColor(Color.BLACK);
+			} else if(Math.abs(lastMove-i)==1){
+				g.setColor(Color.YELLOW);
+				g.fillRect(i*100,100, 100, 100);
+				g.setColor(Color.BLACK);
+			}
+			g.drawString(""+board[i], 10+i*100, 150);
 		}
 	}
 
@@ -58,34 +59,34 @@ public class ArrayNotesGame extends JComponent implements MouseListener{
 			piecesLeft += board[i];
 		}
 	}
-  
-  public int AIMove() {
-    int maxPoints = 0;
-    int correctMove = 0;
-    for (int slot = 0; slot < board.length; slot++){
-      int tempPoints = 0;
-      if (board[slot] > 0){
-					tempPoints++;
-					
-				}
-				if (slot-1>=0&&board[slot-1]>0){
-					tempPoints++;
-					
-				}
-				if (slot + 1 < board.length&&board[slot+1]>0){
 
-					tempPoints++;
+	public int AIMove() {
+		int maxPoints = 0;
+		int correctMove = 0;
+		for (int slot = 0; slot < board.length; slot++){
+			int tempPoints = 0;
+			if (board[slot] > 0){
+				tempPoints++;
 
-				}
-        if(tempPoints>maxPoints){
-          correctMove=slot;
-          maxPoints = tempPoints;
-        }
-    }
-    
-  
-    return correctMove;
-  }
+			}
+			if (slot-1>=0&&board[slot-1]>0){
+				tempPoints++;
+
+			}
+			if (slot + 1 < board.length&&board[slot+1]>0){
+
+				tempPoints++;
+
+			}
+			if(tempPoints>maxPoints){
+				correctMove=slot;
+				maxPoints = tempPoints;
+			}
+		}
+
+
+		return correctMove;
+	}
 
 	public static void main(String[] args) {
 
@@ -146,12 +147,12 @@ public class ArrayNotesGame extends JComponent implements MouseListener{
 					piecesLeft--;
 
 				}
-        player1+=tempPoints;
-        
+				player1+=tempPoints;
+
 				//AI Move
-        int AISlot = AIMove();
-        tempPoints=0;
-     
+				int AISlot = AIMove();
+				tempPoints=0;
+
 				if (board[AISlot] > 0){
 					tempPoints++;
 					board[AISlot]--;
@@ -167,24 +168,24 @@ public class ArrayNotesGame extends JComponent implements MouseListener{
 					tempPoints++;
 					board[AISlot+1]--;
 					piecesLeft--;
-        }
-        player2+=tempPoints;
-        lastMove = AISlot;
-				
+				}
+				player2+=tempPoints;
+				lastMove = AISlot;
+
 			} else {
 
 				System.out.println("Not a correct submission!");
 			}
 		}  {
-		//game over
-		if(e.getY() <100){
-			reset();
+			//game over
+			if(e.getY() <100){
+				reset();
+			}
+
 		}
+		repaint();
 
 	}
-	repaint();
-
-}
 }
 
 
