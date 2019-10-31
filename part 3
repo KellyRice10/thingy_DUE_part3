@@ -1,1 +1,333 @@
+import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
+public class ArrayNotesGame extends JComponent implements MouseListener{
+
+	int[] board = new int[5];
+
+	int turn = 0;
+	int player1 = 0, player2 = 0;
+	int piecesLeft = 0;
+  
+  int lastMove = -5;
+
+	public  ArrayNotesGame() {
+		addMouseListener(this);
+		reset();
+	}
+
+	public void paintComponent(Graphics g){
+		g.drawString("Player 1: " + player1, 10, 20);
+		g.drawString("Player 2: " + player2, 250, 20);
+		g.drawString("Turn: " + (turn%2+1), 10, 50);
+
+		if (piecesLeft == 0) {
+			if(player1 > player2){
+				g.drawString("Player 1 Wins!", 250, 50);
+			} else if (player2 > player1){
+				g.drawString("Player 2 Wins!", 250, 50);
+			} else {
+				g.drawString("Tied!", 250, 50);
+			}
+		}
+
+		for (int i = 0; i< board.length; i++){
+			if(lastMove==i){
+        g.setColor(Color.GREEN);
+        g.fillRect(i*100,100, 100, 100);
+        g.setColor(Color.BLACK);
+      } else if(Math.abs(lastMove-i)==1){
+          g.setColor(Color.YELLOW);
+          g.fillRect(i*100,100, 100, 100);
+          g.setColor(Color.BLACK);
+      }
+      g.drawString(""+board[i], 10+i*100, 150);
+		}
+	}
+
+	public void reset(){
+		player1=0;
+		player2=0;
+		piecesLeft = 0;
+		for (int i = 0; i< board.length; i++){
+			board[i] = (int)(Math.random() * 10);
+			piecesLeft += board[i];
+		}
+	}
+  
+  public int AIMove() {
+    int maxPoints = 0;
+    int correctMove = 0;
+    for (int slot = 0; slot < board.length; slot++){
+      int tempPoints = 0;
+      if (board[slot] > 0){
+					tempPoints++;
+					
+				}
+				if (slot-1>=0&&board[slot-1]>0){
+					tempPoints++;
+					
+				}
+				if (slot + 1 < board.length&&board[slot+1]>0){
+
+					tempPoints++;
+
+				}
+        if(tempPoints>maxPoints){
+          correctMove=slot;
+          maxPoints = tempPoints;
+        }
+    }
+    
+  
+    return correctMove;
+  }
+
+	public static void main(String[] args) {
+
+		JFrame frame = new JFrame("Amber's  Game");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		frame.setSize(500, 200);
+		frame.add(new ArrayNotesGame());
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+		if(piecesLeft > 0){
+			int slot = e.getX()/100;
+			int tempPoints = 0;
+
+			if (slot >= 0 && slot < board.length){
+				if (board[slot] > 0){
+					tempPoints++;
+					board[slot]--;
+					piecesLeft--;
+				}
+				if (slot-1>=0&&board[slot-1]>0){
+					tempPoints++;
+					board[slot-1]--;
+					piecesLeft--;
+				}
+				if (slot + 1 < board.length&&board[slot+1]>0){
+
+					tempPoints++;
+					board[slot+1]--;
+					piecesLeft--;
+
+				}
+        player1+=tempPoints;
+        
+				//AI Move
+        int AISlot = AIMove();
+        tempPoints=0;
+     
+				if (board[AISlot] > 0){
+					tempPoints++;
+					board[AISlot]--;
+					piecesLeft--;
+				}
+				if (AISlot-1>=0&&board[AISlot-1]>0){
+					tempPoints++;
+					board[AISlot-1]--;
+					piecesLeft--;
+				}
+				if (AISlot + 1 < board.length&&board[AISlot+1]>0){
+
+					tempPoints++;
+					board[AISlot+1]--;
+					piecesLeft--;
+        }
+        player2+=tempPoints;
+        lastMove = AISlot;
+				
+			} else {
+
+				System.out.println("Not a correct submission!");
+			}
+		}  {
+		//game over
+		if(e.getY() <100){
+			reset();
+		}
+
+	}
+	repaint();
+
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*import java.awt.Graphics;
+import java.util.Scanner;
+
+import javax.swing.JFrame;
+
+public class Kelly_Elizabeth_Game {
+
+	//public static void main(String[] args) {
+
+
+
+		public static void main(String[] args) {
+			Scanner scan = new Scanner(System.in);
+
+		int[] board = new int[5];
+
+		int turn = 0;
+		int player1 = 0, player2 = 0;
+		int piecesLeft = 0;
+
+
+			JFrame frame = new JFrame("Amber's  Game");
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setVisible(true);
+			frame.setSize(500, 200);
+			frame.add(new Kelly_Elizabeth_Game());
+		}
+
+		public void Kelly_Elizabeth_Game(){
+			addMouseListener(this);
+			reset();
+		}
+		public void reset() {
+			int piecesLeft = 0;
+			for (int i = 0; i< board.length; i++){
+				board[i] = (int)(Math.random() * 10);
+				piecesLeft += board[i];
+		}
+			int player1=0;
+			int player2=0;
+			int turn=0;
+
+	}
+		public void paintComponent(Graphics g){
+			int player1=0;
+			int player2=0;
+			int turn=0;
+			int piecesLeft = 0;
+			g.drawString("Player 1: " + player1, 10, 20);
+			g.drawString("Player 2: " + player2, 10, 20);
+			g.drawString("Turn: " + (turn%2+1), 10, 50);
+			if (piecesLeft == 0) {
+				if(player1 > player2){
+					g.drawString("Player 1 Wins!", 250, 50);
+				} else if (player2 > player1){
+					g.drawString("Player 2 Wins!", 250, 50);
+				} else {
+					g.drawString("Tied!", 250, 50);
+				}
+			}
+
+			}
+		}
+
+
+ */
+
+/*		
+		//loading the board
+		for (int i = 0; i< board.length; i++){
+			board[i] = (int)(Math.random() * 10);
+			piecesLeft += board[i];
+		}
+
+		while (piecesLeft > 0) {
+			System.out.println("Player 1: ");
+			printBoard(board);
+			int slot = scan.nextInt() - 1;
+			int tempPoints = 0;
+
+			if (slot >= 0 && slot < 5){
+				if (slot - 1 >= 0){
+					if (board[slot-1] > 0){
+						tempPoints++;
+						board[slot-1]--;
+						piecesLeft--;
+
+					}
+				}
+
+				if (board[slot] > 0){
+					tempPoints++;
+					board[slot-1]--;
+					piecesLeft--;
+				}
+				if (slot + 1 < 5){
+					if (board[slot+1] > 0){
+						tempPoints++;
+						board[slot+1]--;
+						piecesLeft--;
+					}
+				}
+
+				if(turn%2 == 0){
+					player1+=tempPoints;
+				}else{
+					player2+=tempPoints;
+				}
+				turn++;
+
+
+
+			} else {
+
+				System.out.println("Not a correct submission!");
+			}
+		}
+	}
+
+
+	public static void printBoard(int[] b) {
+
+		System.out.println("1 2 3 4 5");
+		System.out.println("---------");
+		for(int i = 0; i < b.length; i++){
+			System.out.print(b[i] + ", ");
+		}
+		System.out.println();
+	}
+
+}
+ */
 
